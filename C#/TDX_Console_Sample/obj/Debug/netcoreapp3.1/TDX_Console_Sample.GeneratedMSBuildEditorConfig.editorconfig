@@ -1,8 +1,0 @@
-is_global = true
-build_property.RootNamespace = TDX_Console_Sample
-build_property.ProjectDir = D:\SouceCode\MDX\MDX_Github\C#\TDX_Console_Sample\
-build_property.EnableComHosting = 
-build_property.EnableGeneratedComInterfaceComImportInterop = 
-build_property.CsWinRTUseWindowsUIXamlProjections = false
-build_property.EffectiveAnalysisLevelStyle = 
-build_property.EnableCodeStyleSeverity = 
