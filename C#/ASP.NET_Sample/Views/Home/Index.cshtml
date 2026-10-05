@@ -9,12 +9,7 @@
     @* <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>*@
 </div>
 
-<h3>取得憑證資料:</h3>
-<div class="align-text-bottom">
-    <p> @ViewBag.AccessToken</p>
-</div>
+<h3>HTTP 狀態碼: @ViewBag.StatusCode</h3>
 
 <h3>api 資料:</h3>
-<div class="align-text-bottom">
-    <p> @ViewBag.ApiResponse</p>
-</div>
+<pre class="border rounded bg-light p-3" style="max-height: 70vh; overflow: auto;"><code>@ViewBag.ApiResponse</code></pre>
