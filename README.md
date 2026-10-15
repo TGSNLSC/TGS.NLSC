@@ -17,7 +17,7 @@
 範例使用 HTTP GET，將 `BaseUrl` 與相對路徑組合為完整網址：
 
 ```text
-https://xxx.xxx.xxx.xxx/tgsApi/3dms/I3S/building/i3s/SceneServer/layers/0
+https://xxx.xxx.xxx.xxx/tgs_api/3dms/I3S/building/i3s/SceneServer/layers/0
 ```
 
 上述網址是示意值，請以服務管理者提供的實際網址為準。若使用內網 IP，執行環境必須能連到該網路；雲端服務無法直接存取本機內網位址。
