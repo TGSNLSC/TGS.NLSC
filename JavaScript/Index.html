@@ -1,16 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-Hant">
 <head>
-<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-<script type="text/javascript" src="Sample.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TGS API Sample</title>
+    <style>
+        body { max-width: 960px; margin: 24px auto; padding: 0 16px; }
+        #requesturl { overflow-wrap: anywhere; }
+        pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+    </style>
+    <script src="Sample.js" defer></script>
 </head>
 <body>
-    <h3>取得憑證資料:</h3>
-    <div id="accesstoken" class="align-text-bottom">        
-    </div>
-
-    <h3>api 資料:</h3>
-    <div id="apireponse" class="align-text-bottom">        
-    </div>
+    <h1>TGS API</h1>
+    <h3>請求網址:</h3>
+    <div id="requesturl"></div>
+    <h3>HTTP 狀態:</h3>
+    <div id="httpstatus" role="status" aria-live="polite"></div>
+    <h3>API 回應內容:</h3>
+    <pre id="apiresponse"></pre>
 </body>
 </html>

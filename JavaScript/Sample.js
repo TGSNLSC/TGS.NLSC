@@ -1,59 +1,58 @@
-$(function () {
-    GetAuthorizationHeader();
-    
-    GetApiResponse();    
-});
+const tgsApiOptions = {
+    BaseUrl: "https://YOUR_TGS_API_HOST/tgs_api/",
+    ApiKey: "YOUR_TGS_API_KEY"
+};
 
-function GetAuthorizationHeader() {    
-    const parameter = {
-        grant_type:"client_credentials",
-        client_id: "XXXXXXXXXX-XXXXXXXX-XXXX-XXXX",
-        client_secret: "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
-    };
-    
-    let auth_url = "https://tdx.transportdata.tw/auth/realms/TDXConnect/protocol/openid-connect/token";
-        
-    $.ajax({
-        type: "POST",
-        url: auth_url,
-        headers: {
-                "Accept-Encoding": "br,gzip",
-              },  
-        crossDomain:true,
-        dataType:'JSON',                
-        data: parameter,
-        async: false,       
-        success: function(data){            
-            $("#accesstoken").text(JSON.stringify(data));                            
-        },
-        error: function (xhr, textStatus, thrownError) {
-            
+const sceneLayerPath = "3dms/I3S/building/i3s/SceneServer/layers/0";
+
+document.addEventListener("DOMContentLoaded", GetApiResponse);
+
+async function GetApiResponse() {
+    const requestUrl = document.getElementById("requesturl");
+    const status = document.getElementById("httpstatus");
+    const responseContent = document.getElementById("apiresponse");
+    const controller = new AbortController();
+    let timeoutId;
+
+    requestUrl.textContent = "";
+    status.textContent = "Loading...";
+    responseContent.textContent = "";
+
+    try {
+        if (!tgsApiOptions.BaseUrl.trim() || !tgsApiOptions.ApiKey.trim()
+            || tgsApiOptions.ApiKey === "YOUR_TGS_API_KEY") {
+            throw new Error("Set BaseUrl and ApiKey in Sample.js before calling the API.");
         }
-    });          
+
+        const url = new URL(sceneLayerPath, tgsApiOptions.BaseUrl);
+        requestUrl.textContent = url.href;
+        timeoutId = setTimeout(() => controller.abort(), 30000);
+
+        const response = await fetch(url, {
+            method: "GET",
+            headers: { "tgs-api-key": tgsApiOptions.ApiKey },
+            signal: controller.signal
+        });
+
+        status.textContent = `HTTP ${response.status}`;
+        const content = await response.text();
+        responseContent.textContent = FormatJson(content);
+    } catch (error) {
+        status.textContent = "Request failed";
+        responseContent.textContent = controller.signal.aborted
+            ? "The request timed out after 30 seconds."
+            : error instanceof TypeError
+                ? "Request failed. Check the URL, network, HTTPS certificate and server CORS settings."
+                : error.message;
+    } finally {
+        clearTimeout(timeoutId);
+    }
 }
 
-function GetApiResponse(){    
-    let accesstokenStr = $("#accesstoken").text();    
-
-    let accesstoken = JSON.parse(accesstokenStr);    
-
-    if(accesstoken !=undefined){
-        $.ajax({
-            type: 'GET',
-            url: 'https://tdx.transportdata.tw/api/basic/v2/Rail/TRA/LiveTrainDelay?$top=30&$format=JSON',             
-            headers: {
-                "authorization": "Bearer " + accesstoken.access_token,
-                 "Accept-Encoding": "br,gzip",
-              },            
-            async: false,
-            success: function (Data) {
-                $('#apireponse').text(JSON.stringify(Data));                
-                console.log('Data', Data);
-            },
-            error: function (xhr, textStatus, thrownError) {
-                console.log('errorStatus:',textStatus);
-                console.log('Error:',thrownError);
-            }
-        });
+function FormatJson(content) {
+    try {
+        return JSON.stringify(JSON.parse(content), null, 2);
+    } catch {
+        return content;
     }
 }
